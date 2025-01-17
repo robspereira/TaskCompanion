@@ -1,0 +1,6 @@
+﻿services:
+  todomanager:
+    image: todomanager
+    build:
+      context: .
+      dockerfile: ToDoManager/Dockerfile

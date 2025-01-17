@@ -1,0 +1,13 @@
+@TaskCompanion_HostAddress = http://localhost:5243
+
+GET {{TaskCompanion_HostAddress}}/weatherforecast/
+Accept: application/json
+
+GET {{TaskCompanion_HostAddress}}/api/
+Accept: application/json
+
+GET {{TaskCompanion_HostAddress}}/api
+Accept: application/json
+###
+
+
