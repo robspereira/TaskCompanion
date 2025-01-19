@@ -1,26 +1,48 @@
-using Microsoft.AspNetCore.Http.HttpResults;
+using System.Security.Claims;
 using Microsoft.EntityFrameworkCore;
+using ToDoManager.DTO;
 using ToDoManager.Model;
 
 namespace ToDoManager.Service;
 
-public class TasksService
+public class TasksService(AppDbContext _context, IHttpContextAccessor httpContextAccessor)
 {
-    private readonly AppDbContext _context;
-
-    public TasksService(AppDbContext context)
-    {
-        _context = context;
-    }
     
-    public async Task<Tasks> AddTaskAsync(Tasks task) {  
+    public async Task<Tasks> AddTaskAsync(TaskDTO dto)
+    {
+        var guid = GetUserId();
+        if (guid is null)
+            return null; 
+        
+        var user = await _context.Users.FindAsync(guid);
+        if (user == null)
+            return null;
+
+        var task = new Tasks
+        {
+            Name = dto.TaskName,
+            Description = dto.TaskDescription,
+            Status = dto.TaskStatus,
+            UserId = guid.Value,
+            User = user
+
+        };
+        
         _context.Tasks.Add(task);
         await _context.SaveChangesAsync();
+        
         return task;
     }
     
-    public async Task<Tasks> GetTaskByIdAsync(int id) {  // Alterei para TaskItem
-        return await _context.Tasks.FindAsync(id);
+    public async Task<Tasks> GetTaskByIdAsync(int id) { 
+        var guid = GetUserId();
+        
+        if (guid is null)
+            return null;
+        
+        
+        return await _context.Tasks
+            .FirstOrDefaultAsync(t => t.TaskId == id && t.UserId == guid.Value);
     }
 
     public async Task<List<Tasks>> GetAllTasks()
@@ -56,5 +78,17 @@ public class TasksService
         await _context.SaveChangesAsync();
         return targetTask;
     }
+    
+    
+    private Guid? GetUserId()
+    {
+        var userIdClaim = httpContextAccessor.HttpContext?.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
+        if (Guid.TryParse(userIdClaim, out var userId))
+        {
+            return userId;
+        }
+        return null; 
+    }
+    
     
 }

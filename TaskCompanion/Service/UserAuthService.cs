@@ -66,7 +66,7 @@ public class UserAuthService(AppDbContext context, IConfiguration configuration)
         return Convert.ToBase64String(randomNumber);
     }
 
-    private async Task<User?> ValidateRefreshTokenASync(int userId, string refreshToken)
+    private async Task<User?> ValidateRefreshTokenASync(Guid userId, string refreshToken)
     {
         var user = await context.Users.FindAsync(userId);
         
@@ -100,8 +100,8 @@ public class UserAuthService(AppDbContext context, IConfiguration configuration)
         var claims = new List<Claim>
         {
             new Claim(ClaimTypes.Name, user.Username),
-            new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
-            new Claim(ClaimTypes.Role, user.Role)
+            new Claim(ClaimTypes.NameIdentifier, user.UserId.ToString()),
+            new Claim(ClaimTypes.Role, user.Role.ToString())
         };
 
         var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration.GetValue<string>("AppSettings:Token")!));
@@ -119,4 +119,5 @@ public class UserAuthService(AppDbContext context, IConfiguration configuration)
         return new JwtSecurityTokenHandler().WriteToken(tokenDescriptor);
 
     }
+
 }

@@ -14,6 +14,7 @@ builder.Services.AddOpenApi();
 
 builder.Services.AddScoped<TasksService>();
 builder.Services.AddScoped<IUserAuthInterface, UserAuthService>();
+builder.Services.AddHttpContextAccessor();
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>

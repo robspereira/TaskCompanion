@@ -1,5 +1,6 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
+using ToDoManager.DTO;
 using ToDoManager.Model;
 using ToDoManager.Service;
 
@@ -7,11 +8,11 @@ namespace ToDoManager.Controller
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ToDoController : ControllerBase
+    public class TasksController : ControllerBase
     {
         private readonly TasksService _service;
 
-        public ToDoController(TasksService service)
+        public TasksController(TasksService service)
         {
             _service = service;
         }
@@ -38,15 +39,19 @@ namespace ToDoManager.Controller
         }
 
         [HttpPost]
+        [Authorize]
         [Route("registerTask")]
-        public async Task<ActionResult> AddToDo(Tasks newItem)
+        public async Task<ActionResult> AddTask([FromBody] TaskDTO newItem)
         {
-            if(newItem is null)
+            if (newItem is null)
                 return BadRequest();
             
-            var item = await _service.AddTaskAsync(newItem);
-            return CreatedAtAction(nameof(GetToDoById), new {id = newItem.TaskId}, newItem);
+            var task = await _service.AddTaskAsync(newItem);
 
+            if (task == null)
+                return Unauthorized();  
+            
+            return CreatedAtAction(nameof(GetToDoById), new { id = task.TaskId }, task);
         }
 
         [HttpPut("{id}")]
