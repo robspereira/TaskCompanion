@@ -42,20 +42,6 @@ namespace ToDoManager.Controller
             return Ok(result);
         }
         
-        [HttpGet("test")]
-        [Authorize]
-        public IActionResult AuthenticatedOnly()
-        {
-            return Ok();
-        }
-        
-        [HttpGet("test")]
-        [Authorize(Roles = "admin")]
-        public IActionResult AuthenticatedAdminOnly()
-        {
-            return Ok("You are an admin!");
-        }
-        
     
     }
     

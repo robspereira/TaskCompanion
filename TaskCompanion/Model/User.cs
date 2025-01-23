@@ -9,7 +9,10 @@ public class User
     [Key]
     public Guid UserId { get; set; } = Guid.NewGuid();
     
-    [Column(TypeName = "varchar(30)")]
+    [Column(TypeName = "varchar(80)")]
+    public string FullName { get; set; } = string.Empty;
+    
+    [Column(TypeName = "varchar(15)")]
     public string Username { get; set; } = string.Empty;
     
     [Column(TypeName = "varchar(255)")]

@@ -1,4 +1,4 @@
-using TaskStatus = ToDoManager.Enum.TaskStatus;
+using ToDoManager.Enum;
 
 namespace ToDoManager.DTO;
 
@@ -8,5 +8,5 @@ public class TaskDTO
     
     public string TaskDescription { get; set; }
 
-    public TaskStatus TaskStatus { get; set; } = TaskStatus.Aberto;
+    public TasksStatus TasksStatus { get; set; } = TasksStatus.Aberto;
 }

@@ -1,6 +1,6 @@
 namespace ToDoManager.Enum;
 
-public enum TaskStatus
+public enum TasksStatus
 {
     Aberto,
     Trabalhando,

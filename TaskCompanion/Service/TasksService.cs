@@ -22,7 +22,7 @@ public class TasksService(AppDbContext _context, IHttpContextAccessor httpContex
         {
             Name = dto.TaskName,
             Description = dto.TaskDescription,
-            Status = dto.TaskStatus,
+            Status = dto.TasksStatus,
             UserId = guid.Value,
             User = user
 
@@ -40,28 +40,37 @@ public class TasksService(AppDbContext _context, IHttpContextAccessor httpContex
         if (guid is null)
             return null;
         
-        
         return await _context.Tasks
             .FirstOrDefaultAsync(t => t.TaskId == id && t.UserId == guid.Value);
     }
 
     public async Task<List<Tasks>> GetAllTasks()
     {
-        return await _context.Tasks.ToListAsync();
+        var guid = GetUserId();
+        
+        if (guid is null)
+            return null;
+        
+        
+        return await _context.Tasks.OrderBy(t => t.UserId == guid).ToListAsync();
     }
 
-    public async Task<Tasks> UpdateTaskAsync(int id, Tasks task)
+    public async Task<Tasks> UpdateTaskAsync(int id, TaskDTO task)
     {
-        var targetTask = await _context.Tasks.FindAsync(id);
+        var guid = GetUserId();
+        if (guid is null)
+            return null;
         
+        var targetTask = await _context.Tasks.FirstOrDefaultAsync(t => t.TaskId == id && 
+                                                                       t.UserId == guid.Value);
         if (targetTask is null)
         {
             return null;
         }
         
-        targetTask.Name = task.Name;
-        targetTask.Description = task.Description;
-        targetTask.Status = task.Status;
+        targetTask.Name = task.TaskName;
+        targetTask.Description = task.TaskDescription;
+        targetTask.Status = task.TasksStatus;
         await _context.SaveChangesAsync();
         return targetTask;
             
@@ -69,8 +78,12 @@ public class TasksService(AppDbContext _context, IHttpContextAccessor httpContex
 
     public async Task<Tasks> DeleteTaskAsync(int id)
     {
-        var targetTask = await _context.Tasks.FindAsync(id);
-
+        var guid = GetUserId();
+        if (guid is null)
+            return null;
+        
+        var targetTask = await _context.Tasks.FirstOrDefaultAsync(t => t.TaskId == id && 
+                                                                       t.UserId == guid.Value);
         if (targetTask is null)
             return null;
     

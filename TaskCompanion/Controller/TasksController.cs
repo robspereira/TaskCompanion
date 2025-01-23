@@ -18,6 +18,7 @@ namespace ToDoManager.Controller
         }
         
         [HttpGet]
+        [Route("listAll")]
         public async Task<ActionResult<List<Task>>> GetTasks()
         {
             var tasks = await _service.GetAllTasks();
@@ -55,7 +56,7 @@ namespace ToDoManager.Controller
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> updateToDo(int id, Tasks tasks)
+        public async Task<IActionResult> updateTask(int id, TaskDTO tasks)
         {
             var item = await _service.UpdateTaskAsync(id, tasks);
             
@@ -65,7 +66,6 @@ namespace ToDoManager.Controller
             }
         
             return NoContent();
-        
         }
         
         

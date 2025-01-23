@@ -1,7 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text.Json.Serialization;
-using TaskStatus = ToDoManager.Enum.TaskStatus;
+using ToDoManager.Enum;
 
 namespace ToDoManager.Model;
 
@@ -18,7 +18,7 @@ public class Tasks
     public string? Description { get; set; }
     
     [Column(TypeName = "varchar(20)")]
-    public TaskStatus Status { get; set; } = TaskStatus.Aberto;
+    public TasksStatus Status { get; set; } = TasksStatus.Aberto;
     
     public Guid UserId { get; set; }
     

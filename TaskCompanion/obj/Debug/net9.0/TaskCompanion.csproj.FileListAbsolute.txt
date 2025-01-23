@@ -279,3 +279,6 @@
 /home/lucas/RiderProjects/TaskCompanion/TaskCompanion/obj/Debug/net9.0/TaskCompanion.pdb
 /home/lucas/RiderProjects/TaskCompanion/TaskCompanion/obj/Debug/net9.0/TaskCompanion.genruntimeconfig.cache
 /home/lucas/RiderProjects/TaskCompanion/TaskCompanion/obj/Debug/net9.0/ref/TaskCompanion.dll
+/home/lucas/RiderProjects/TaskCompanion/TaskCompanion/bin/Debug/net9.0/Swashbuckle.AspNetCore.Swagger.dll
+/home/lucas/RiderProjects/TaskCompanion/TaskCompanion/bin/Debug/net9.0/Swashbuckle.AspNetCore.SwaggerGen.dll
+/home/lucas/RiderProjects/TaskCompanion/TaskCompanion/bin/Debug/net9.0/Swashbuckle.AspNetCore.SwaggerUI.dll

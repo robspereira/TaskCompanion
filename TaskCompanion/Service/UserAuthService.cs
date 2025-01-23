@@ -51,6 +51,7 @@ public class UserAuthService(AppDbContext context, IConfiguration configuration)
             
         user.Username = request.Username;
         user.PasswordHash = hashedPassword;
+        user.FullName = request.FullName;
         
         context.Users.Add(user);
         await context.SaveChangesAsync();
